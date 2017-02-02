@@ -7,15 +7,15 @@ steps:
     description: Performing unit tests...
     commands:
       # Need to have the source in the correct GOPATH folder - let's do that
-      - mkdir -p /go/src/github.com/advance512
-      - ln -s /codefresh/volume/prest /go/src/github.com/advance512/prest
-      - cd /go/src/github.com/advance512/prest && go get
-      - cd /go/src/github.com/advance512/prest && go test
+      - mkdir -p /go/src/github.com/codefreshdemo
+      - ln -s /codefresh/volume/cf-example-golang-hello-world /go/src/github.com/codefreshdemo/cf-example-golang-hello-world
+      - cd /go/src/github.com/codefreshdemo/cf-example-golang-hello-world && go get
+      - cd /go/src/github.com/codefreshdemo/cf-example-golang-hello-world && go test
 
   build_image:
     type: build
     description: Building the image...
-    image_name: advance512/prest
+    image_name: codefreshdemo/cf-example-golang-hello-world
     tag: '${{CF_BRANCH}}'
     
   launch_composition:

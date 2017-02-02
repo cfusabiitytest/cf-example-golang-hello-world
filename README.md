@@ -23,16 +23,16 @@ To test our code we use Codefresh's https://docs.codefresh.io/docs/steps#section
 The Freestyle step basically let's you say "Hey, Codefresh! Here's a Docker image. Create a new container and run these commands for me, will ya?"
 
 ```
-perform_tests:
-  image: golang:latest
-  working_directory: ${{main_clone}}
-  description: Performing unit tests...
-  commands:
-    # Need to have the source in the correct GOPATH folder - let's do that
-    - mkdir -p /go/src/github.com/codefreshdemo
-    - ln -s /codefresh/volume/prest /go/src/github.com/codefreshdemo/prest
-    - cd /go/src/github.com/codefreshdemo/prest && go get
-    - cd /go/src/github.com/codefreshdemo/prest && go test
+  perform_tests:
+    image: golang:latest
+    working_directory: ${{main_clone}}
+    description: Performing unit tests...
+    commands:
+      # Need to have the source in the correct GOPATH folder - let's do that
+      - mkdir -p /go/src/github.com/codefreshdemo
+      - ln -s /codefresh/volume/cf-example-golang-hello-world /go/src/github.com/codefreshdemo/cf-example-golang-hello-world
+      - cd /go/src/github.com/codefreshdemo/cf-example-golang-hello-world && go get
+      - cd /go/src/github.com/codefreshdemo/cf-example-golang-hello-world && go test
 ```
 
 The `image` field states which image should be used when creating the container (Similar to Travis CI's `language` or CircleCI`s `machine`).
@@ -46,11 +46,11 @@ To bake our application into a Docker image we use Codefresh's https://docs.code
 The Build is a simplified abstraction over the Docker build command.
 
 ```
-build_image:
-  type: build
-  description: Building the image...
-  image_name: codefreshdemo/prest
-  tag: '${{CF_BRANCH}}'
+  build_image:
+    type: build
+    description: Building the image...
+    image_name: codefreshdemo/cf-example-golang-hello-world
+    tag: '${{CF_BRANCH}}'
 ```
 
 Use the `image_name` field to declare the name of the resulting image (don't forget to change the image owner name from `codefreshdemo` to your own!).
@@ -80,7 +80,7 @@ To use this example:
 
 . Fork this repository to your own github account.
 . Log in to Codefresh using your github account.
-. Make sure to replace `codefreshdemo` with your own Github username.
+. Make sure to replace `codefreshdemo` with your own Github username, both in `codefresh.yml` and in `docker-compose.yml`.
 . Click the `Add Service` button.
 . Select the forked repository.
 . Select the `I have a codefresh.yml file` option.

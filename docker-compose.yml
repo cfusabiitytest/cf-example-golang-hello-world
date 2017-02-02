@@ -1,7 +1,7 @@
 version: '2'
 services:
   prest:
-    image: 'advance512/prest:master'
+    image: 'codefreshdemo/cf-example-golang-hello-world:master'
     environment:
       - PREST_PG_HOST=postgres
       - PREST_PG_USER=prest
