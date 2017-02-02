@@ -1,0 +1,22 @@
+version: '2'
+services:
+  prest:
+    image: 'advance512/prest:master'
+    environment:
+      - PREST_PG_HOST=postgres
+      - PREST_PG_USER=prest
+      - PREST_PG_PASS=prest
+      - PREST_PG_DATABASE=prest
+      - PREST_PG_PORT=5432
+    depends_on:
+      - postgres
+    ports:
+      - '3000'
+  postgres:
+    image: mbrung/postgres-no-volume
+    environment:
+      - POSTGRES_USER=prest
+      - POSTGRES_DB=prest
+      - POSTGRES_PASSWORD=prest
+    ports:
+      - '5432'
