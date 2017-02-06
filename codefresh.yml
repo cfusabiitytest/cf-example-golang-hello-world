@@ -7,17 +7,42 @@ steps:
     description: Performing unit tests...
     commands:
       # Need to have the source in the correct GOPATH folder - let's do that
-      - mkdir -p /go/src/github.com/codefreshdemo
-      - ln -s /codefresh/volume/cf-example-golang-hello-world /go/src/github.com/codefreshdemo/cf-example-golang-hello-world
-      - cd /go/src/github.com/codefreshdemo/cf-example-golang-hello-world && go get
-      - cd /go/src/github.com/codefreshdemo/cf-example-golang-hello-world && go test
+      - mkdir -p /go/src/github.com/${{CF_REPO_OWNER}}
+      - ln -s /codefresh/volume/${{CF_REPO_NAME}} /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+      # Install pre-requisites and execute tests
+      - cd /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} && go get
+      - cd /go/src/github.com/${{CF_REPO_OWNER}}/${{CF_REPO_NAME}} && go test
 
   build_image:
     type: build
     description: Building the image...
-    image_name: codefreshdemo/cf-example-golang-hello-world
+    image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     tag: '${{CF_BRANCH}}'
     
   launch_composition:
     type: launch-composition
-    composition: docker-compose.yml
+    description: Launching an environment from a composition...
+    composition:
+      version: '2'
+      services:
+        prest:
+          image: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}:`${{CF_BRANCH}}'
+          environment:
+            - PREST_PG_HOST=postgres
+            - PREST_PG_USER=prest
+            - PREST_PG_PASS=prest
+            - PREST_PG_DATABASE=prest
+            - PREST_PG_PORT=5432
+          depends_on:
+            - postgres
+          ports:
+            - '3000'
+        postgres:
+          image: mbrung/postgres-no-volume
+          environment:
+            - POSTGRES_USER=prest
+            - POSTGRES_DB=prest
+            - POSTGRES_PASSWORD=prest
+          ports:
+            - '5432'
+
