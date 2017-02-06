@@ -26,7 +26,7 @@ steps:
       version: '2'
       services:
         prest:
-          image: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}:`${{CF_BRANCH}}'
+          image: '${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}:${{CF_BRANCH}}'
           environment:
             - PREST_PG_HOST=postgres
             - PREST_PG_USER=prest
