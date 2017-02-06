@@ -78,11 +78,10 @@ Now that we've gotten a grip on the flow, let's get cracking!
 
 To use this example:
 
-. Fork this repository to your own github account.
-. Log in to Codefresh using your github account.
-. Make sure to replace `codefreshdemo` with your own Github username, both in `codefresh.yml` and in `docker-compose.yml`.
+. Fork this repository to your own Github account. (If you want to make changes and get the CI working on new commits)
+. Log in to Codefresh using your Github account.
 . Click the `Add Service` button.
-. Select the forked repository.
+. Select the forked repository. (Or paste in the the original repository's URL.)
 . Select the `I have a codefresh.yml file` option.
 . Complete the wizard.
 . Rejoice!
